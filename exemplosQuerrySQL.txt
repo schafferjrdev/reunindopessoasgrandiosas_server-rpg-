@@ -1,0 +1,41 @@
+SELECT familia.familia_id,familia.familia_nome,familia.familia_foto, SUM(atividade.atividade_pontuacao) AS pontuacao FROM familia JOIN atividade ON (familia.familia_id = atividade.`atividade_familia_id`) WHERE atividade.atividade_data <= 2 group by atividade.atividade_familia_id 
+
+
+SELECT atividade_familia_id, sum(atividade_pontuacao) AS pontuacao FROM atividade WHERE atividade_data=1 group by atividade_familia_id 
+
+SELECT SUM(atividade_pontuacao) FROM atividade WHERE atividade_data = 1
+
+
+CREATE OR REPLACE VIEW resultadoDia AS SELECT familia.familia_id, SUM(atividade.atividade_pontuacao) AS pontuacaoTotal FROM familia JOIN atividade ON (familia.familia_id = atividade.`atividade_familia_id`) WHERE atividade.atividade_data = 2 group by atividade.atividade_familia_id 
+
+
+CREATE OR REPLACE VIEW resultadoDia AS SELECT familia.familia_id, SUM(atividade.atividade_pontuacao) AS pontuacaoTotal FROM familia JOIN atividade ON (familia.familia_id = atividade.`atividade_familia_id`) WHERE atividade.atividade_data = 1 group by atividade.atividade_familia_id;
+
+SELECT familia.familia_id,familia.familia_nome,familia.familia_foto, SUM(atividade.atividade_pontuacao) AS pontuacao, resultadoDia.pontuacaoTotal AS pontosNoDia FROM familia JOIN atividade ON (familia.familia_id = atividade.`atividade_familia_id`) LEFT JOIN resultadoDia ON (familia.familia_id = resultadoDia.familia_id) WHERE atividade.atividade_data <= 1 group by atividade.atividade_familia_id; 
+
+
+CREATE OR REPLACE VIEW resultadoDia AS SELECT familia.familia_id, SUM(atividade.atividade_pontuacao) AS pontuacaoTotal FROM familia JOIN atividade ON (familia.familia_id = atividade.atividade_familia_id) WHERE atividade.atividade_data = "+dia+" group by atividade.atividade_familia_id; 
+
+
+
+//Novas
+
+SELECT DISTINCT atividade_familia_id FROM atividade WHERE atividade_familia_id > 0 
+
+
+
+CREATE OR REPLACE VIEW resultadoDia AS SELECT familia.familia_id, SUM(atividade.atividade_pontuacao) AS pontuacaoTotal FROM familia LEFT JOIN atividade ON (familia.familia_id = atividade.atividade_familia_id) WHERE atividade.atividade_data = 1 group by atividade.atividade_familia_id;
+
+
+SELECT familia.familia_id,familia.familia_nome,familia.familia_foto, SUM(atividade.atividade_pontuacao) AS pontuacao, resultadoDia.pontuacaoTotal AS pontosNoDia FROM familia JOIN atividade ON (familia.familia_id = atividade.`atividade_familia_id`) LEFT JOIN resultadoDia ON (familia.familia_id = resultadoDia.familia_id) WHERE atividade.atividade_data <= 1 group by atividade.atividade_familia_id; 
+
+
+SELECT familia.familia_id, familia.familia_nome, familia.familia_foto, SUM(atividade.atividade_pontuacao) AS pontuacao, resultadoDia.pontuacaoTotal AS pontosDia FROM familia LEFT JOIN atividade ON ( familia.familia_id = atividade.atividade_familia_id) LEFT JOIN resultadoDia ON (familia.familia_id = resultadoDia.familia_id) WHERE atividade.atividade_data <= "+dia+" OR atividade.atividade_data IS NULL GROUP BY familia.familia_id 
+
+
+/------------
+
+
+CREATE OR REPLACE VIEW resultadoDia AS SELECT familia.familia_id, SUM(atividade.atividade_pontuacao) AS pontuacaoTotal FROM familia LEFT JOIN atividade ON (familia.familia_id = atividade.atividade_familia_id) WHERE atividade.atividade_data = "+dia+" group by atividade.atividade_familia_id;
+
+SELECT familia.familia_id, familia.familia_nome, familia.familia_foto, SUM(atividade.atividade_pontuacao) AS pontuacao, resultadoDia.pontuacaoTotal AS pontosDia FROM familia LEFT JOIN atividade ON ( familia.familia_id = atividade.atividade_familia_id AND atividade.atividade_data <= "+dia+") LEFT JOIN resultadoDia ON (familia.familia_id = resultadoDia.familia_id) GROUP BY familia.familia_id 
