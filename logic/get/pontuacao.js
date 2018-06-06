@@ -13,6 +13,8 @@ module.exports = function(request, response) {
 		
 		var resposta={"familias":[],"pontosT":0};
 
+		con.connect();
+
 		con.query("SELECT DISTINCT atividade_familia_id FROM atividade WHERE atividade_familia_id > 0", function (err, result, fields) {
 
 		 });
@@ -67,10 +69,10 @@ module.exports = function(request, response) {
 
 		  });
 
-	
+		con.end();	
 		return	deferred.promise;
 
-		
+	
 	}
 
 	function checkResult(result) {

@@ -16,7 +16,10 @@ module.exports = function(request, response) {
 	var deferred = q.defer();
 
 	let con = db();
-		
+	let conBixo = db();
+	let conBixoInsert = db();
+	let conVet = db();
+	let conVetInsert = db();
 		
 	var login = request.body.login;
 	var senha = request.body.senha;
@@ -29,9 +32,9 @@ module.exports = function(request, response) {
 
 	var familiaId =1;
 
-	console.log(request.body);
 
 
+		con.connect();
 		con.query("SELECT * FROM usuario WHERE user_login=replace('"+login+"', ' ', '')", function (err, result, fields) {
 			    if (err) throw err;
 
@@ -44,7 +47,8 @@ module.exports = function(request, response) {
 
 				if(tipo == 0){
 					//Se for Bixo
-					con.query("SELECT user_familia_id FROM usuario WHERE user_tipo=0 ORDER BY user_hora_cadastro DESC limit 1", function (err, result, fields) {
+					conBixo.connect();
+					conBixo.query("SELECT user_familia_id FROM usuario WHERE user_tipo=0 ORDER BY user_hora_cadastro DESC limit 1", function (err, result, fields) {
 					    if (err) throw err;
 
 
@@ -66,16 +70,16 @@ module.exports = function(request, response) {
 					    	var sql = "INSERT INTO usuario(user_login, user_senha, user_nome, user_descricao, user_foto, user_familia_id, user_tipo, user_hora_cadastro) VALUES (replace('"+login+"', ' ', ''), replace('"+senha+"', ' ', ''), '"+nome+"','"+desc+"','"+foto+"',"+familiaId+",0,CURRENT_TIMESTAMP)";
 					    	
 
-
-					    	con.query(sql, function (err, result, fields) {
+					    	conBixoInsert.connect();
+					    	conBixoInsert.query(sql, function (err, result, fields) {
 					    		console.log("ERRO: "+err);
 
 					    	});
-
+					    	conBixoInsert.end();
 					    
 				  	  
 				  	});
-
+					conBixo.end();
 
 
 
@@ -83,8 +87,8 @@ module.exports = function(request, response) {
 					console.log("Bixo Cadastrado");
 				}else{
 					//Se for Veterano
-					
-					con.query("SELECT user_familia_id FROM usuario WHERE user_tipo=1 ORDER BY user_hora_cadastro DESC limit 1", function (err, result, fields) {
+					conVet.connect();
+					conVet.query("SELECT user_familia_id FROM usuario WHERE user_tipo=1 ORDER BY user_hora_cadastro DESC limit 1", function (err, result, fields) {
 					    if (err) throw err;
 
 					    if(result[0] == undefined || result[0] == null || result[0] == ""){
@@ -105,15 +109,16 @@ module.exports = function(request, response) {
 					    	var sql = "INSERT INTO usuario(user_login, user_senha, user_nome, user_descricao, user_area, user_semestre, user_foto, user_familia_id, user_tipo, user_hora_cadastro) VALUES (replace('"+login+"', ' ', ''), replace('"+senha+"', ' ', ''),'"+nome+"','"+desc+"','"+area+"','"+semestre+"','"+foto+"',"+familiaId+",1,CURRENT_TIMESTAMP)";
 					    	
 
-
+					    	conVetInsert.connect();
 					    	con.query(sql, function (err, result, fields) {
 					    		console.log("ERRO: "+err);
 
 					    	});
-
+					    	conVetInsert.end();
 					    
 				  	  
 				  	});
+				  	conVet.end();
 
 					deferred.resolve(true);
 					console.log("Veterano Cadastrado");
@@ -126,7 +131,7 @@ module.exports = function(request, response) {
 			}
 
 		});
-		
+		con.end();
 		
 		return	deferred.promise;
 

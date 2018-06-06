@@ -10,12 +10,17 @@ module.exports = function(request, response) {
 	function doSomething(){
 		var deferred = q.defer();
 		let con = db();
+
+		let conInterna = db();
+		let conInternaComData = db();
+
 		var data = request.query.data;
 		var idUser = request.query.id;
 		var dataOld;
 		var notificacoes={"antigas":[],"novas":[]};
 
 	
+		con.connect();
 
 		con.query("SELECT user_notificacao FROM usuario WHERE user_id="+idUser, function (err, result, fields) {
 			
@@ -24,7 +29,8 @@ module.exports = function(request, response) {
 				
 				console.log("Tudo zerado");
 						
-						con.query("SELECT * FROM notificacao ORDER BY notificacao_data DESC", function (err, result, fields) {
+						conInterna.connect();
+						conInterna.query("SELECT * FROM notificacao ORDER BY notificacao_data DESC", function (err, result, fields) {
 						    if (err) throw err;
 
 						    
@@ -45,16 +51,20 @@ module.exports = function(request, response) {
 
 						});
 
-						con.query("UPDATE usuario SET user_notificacao="+data+" WHERE usuario.user_id ="+idUser, function (err, result, fields) {
+						conInterna.query("UPDATE usuario SET user_notificacao="+data+" WHERE usuario.user_id ="+idUser, function (err, result, fields) {
 							if (err) throw err;
 							
 							console.log("Requisicao salva");
 						});
+
+						conInterna.end();
 			
 			}else{
 				console.log("Tem uma data lá");
 
-				con.query("SELECT * FROM notificacao WHERE notificacao_data >='"+result[0].user_notificacao.toISOString()+"' ORDER BY notificacao_data DESC", function (err, result, fields) {
+				conInternaComData.connect();
+
+				conInternaComData.query("SELECT * FROM notificacao WHERE notificacao_data >='"+result[0].user_notificacao.toISOString()+"' ORDER BY notificacao_data DESC", function (err, result, fields) {
 						    if (err) throw err;
 
 						    
@@ -75,7 +85,7 @@ module.exports = function(request, response) {
 
 						});
 
-					con.query("SELECT * FROM notificacao WHERE notificacao_data <'"+result[0].user_notificacao.toISOString()+"' ORDER BY notificacao_data DESC", function (err, result, fields) {
+					conInternaComData.query("SELECT * FROM notificacao WHERE notificacao_data <'"+result[0].user_notificacao.toISOString()+"' ORDER BY notificacao_data DESC", function (err, result, fields) {
 						    if (err) throw err;
 
 						    
@@ -95,22 +105,24 @@ module.exports = function(request, response) {
 
 						});
 
-						con.query("UPDATE usuario SET user_notificacao="+data+" WHERE usuario.user_id ="+idUser, function (err, result, fields) {
+						conInternaComData.query("UPDATE usuario SET user_notificacao="+data+" WHERE usuario.user_id ="+idUser, function (err, result, fields) {
 							if (err) throw err;
 							
 							console.log("Requisicao salva");
 						});
+
+						conInternaComData.end();
 						
 			
 			}
 
 		});
-
+		con.end();	
 	
 		
 		return	deferred.promise;
 
-		
+	
 	}
 
 	function checkResult(result) {

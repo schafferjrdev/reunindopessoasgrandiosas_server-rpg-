@@ -56,10 +56,10 @@ module.exports = function(request, response) {
 		
 
 	}
-		con.end();
+		
 		return	deferred.promise;
 
-		
+	con.end();	
 	}
 
 	function checkResult(result) {

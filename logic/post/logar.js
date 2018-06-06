@@ -18,14 +18,16 @@ module.exports = function(request, response) {
 	// return q.fcall(function () {     
 		
 		let con = db();
+		let con2 = db();
 
 		var login = request.body.login;
 
 		var senha = request.body.senha;
 
-		console.log(login,senha);
+		
 
 
+		con.connect();
 
 		con.query("SELECT * FROM usuario WHERE user_login='"+login+"'", function (err, result, fields) {
 			    if (err) throw deferred.reject(err);
@@ -37,7 +39,9 @@ module.exports = function(request, response) {
 
 				}else{
 
-					con.query("SELECT * FROM usuario JOIN familia ON (usuario.user_familia_id = familia.familia_id) WHERE user_login='"+login+"' AND BINARY user_senha='"+senha+"'", function (err, result, fields) {
+					
+					con2.connect();
+					con2.query("SELECT * FROM usuario JOIN familia ON (usuario.user_familia_id = familia.familia_id) WHERE user_login='"+login+"' AND BINARY user_senha='"+senha+"'", function (err, result, fields) {
 					    if (err) throw deferred.reject(err);
 
 					    if(result == null || result == "" || result == undefined){
@@ -46,7 +50,7 @@ module.exports = function(request, response) {
 							deferred.reject(e);
 						}else{
 							//console.log(result); //Resposta para conta existente
-							console.log("Entrou");
+							console.log(result[0].user_nome+" Entrou");
 							
 							
 								 // if(result[0].user_notificacao == null){
@@ -64,12 +68,15 @@ module.exports = function(request, response) {
 					    
 		  	  
 		  			});
-
+		  			
+					con2.end();
 				}
 				
 					    
 		  	  
 		  	});
+
+		con.end();
 
 		
 	
@@ -77,12 +84,13 @@ module.exports = function(request, response) {
 
 	
 	return	deferred.promise;
+
 	// });	
 
 	}
 
 	function checkResult(result) {
-        console.log("Meu Result "+result);
+        
         response.status(200).send(result);
       	
 

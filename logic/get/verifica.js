@@ -10,28 +10,34 @@ module.exports = function(request, response) {
 		var deferred = q.defer();
 		let con = db();
 		var login = request.query.login;
+
+		con.connect();
 		
 		con.query("SELECT * FROM usuario WHERE user_login="+login, function (err, result, fields) {
 		    if (err) throw err;
 
 		    
 		    if(result == null || result == "" || result == undefined){
-		    	console.log("Não Tem");
+		    	console.log(login+" não existe");
 		    	deferred.resolve(false);
 
 		    }else{
-		    	console.log("Tem");
+		    	console.log(login+" existe");
 		    	deferred.resolve(true);
 		    }
 
 		  });
 
+		con.end();	
+
 		
 		return	deferred.promise;
 		
 
-		
+	
 	}
+
+
 
 	function checkResult(result) {
         response.status(200).send(result);

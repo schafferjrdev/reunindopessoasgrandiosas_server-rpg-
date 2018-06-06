@@ -3,7 +3,7 @@ var q = require('q');
 let db = require('../../db');
 
 module.exports = function(request, response) {
-
+//Não está sendo usado
 	var idRec = request.query.id;
 
 	function doSomething(){
@@ -17,6 +17,7 @@ module.exports = function(request, response) {
 		    return result;
 		    
 		  });
+		con.end();	
 		}else{
 			con.query("SELECT * FROM familia WHERE familia_id = "+idRec, function (err, result, fields) {
 		    if (err) throw err;
@@ -24,12 +25,13 @@ module.exports = function(request, response) {
 		    return result;
 		    
 		  });
+		con.end();	
 		}
 		
 		
 		return q.when("Retornou as famílias");
 
-		
+	con.end();	
 	}
 
 	function checkResult(result) {

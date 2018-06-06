@@ -11,7 +11,7 @@ module.exports = function(request, response) {
 		let con = db();
 		var idUser = request.query.id;
 		
-				
+		con.connect();		
 		con.query("SELECT * FROM usuario JOIN familia ON (usuario.user_familia_id = familia.familia_id) WHERE user_id="+idUser, function (err, result, fields) {
 		    if (err) throw err;
 
@@ -26,11 +26,11 @@ module.exports = function(request, response) {
 		    }
 
 		  });
-
+		con.end();	
 		
 		return	deferred.promise;
 
-		
+	
 	}
 
 	function checkResult(result) {

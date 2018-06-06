@@ -11,7 +11,7 @@ module.exports = function(request, response) {
 		let con = db();
 		var dia = request.query.dia;
 		
-				
+		con.connect();		
 		con.query("SELECT atividade.atividade_id, atividade.atividade_nome, atividade.atividade_pontuacao, atividade.atividade_familia_id AS vencedor, familia.familia_foto AS vencedor_foto FROM atividade LEFT JOIN familia ON(atividade.atividade_familia_id = familia.familia_id) WHERE atividade_data ="+dia, function (err, result, fields) {
 		    if (err) throw err;
 
@@ -21,15 +21,16 @@ module.exports = function(request, response) {
 		    	deferred.resolve(result);
 
 		    }else{
-		    	console.log("Tem");
+		    	console.log("Tem "+result.length+" atividades");
 		    	deferred.resolve(result);
 		    }
 
 		  });
+		con.end();	
 
 		return	deferred.promise;
 
-		
+	
 	}
 
 	function checkResult(result) {

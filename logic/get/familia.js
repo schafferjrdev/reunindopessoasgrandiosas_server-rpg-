@@ -11,7 +11,7 @@ module.exports = function(request, response) {
 		let con = db();
 		var familia = request.query.id;
 		
-				
+		con.connect();		
 		con.query("SELECT * FROM familia WHERE familia_id ="+familia, function (err, result, fields) {
 		    if (err) throw err;
 
@@ -26,11 +26,12 @@ module.exports = function(request, response) {
 		    }
 
 		  });
+		con.end();	
 
 	
 		return	deferred.promise;
 
-		
+	
 	}
 
 	function checkResult(result) {

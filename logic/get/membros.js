@@ -8,7 +8,9 @@ module.exports = function(request, response) {
 
 	function doSomething(){
 		var deferred = q.defer();
-		let con = db();
+		let conTudo = db();
+		let conId= db();
+
 		var idUser = request.query.idUser;
 		var idFamilia = request.query.idFamilia;
 
@@ -18,7 +20,8 @@ module.exports = function(request, response) {
 
 		if(idUser == null){
 
-			con.query("SELECT * FROM usuario WHERE user_familia_id="+idFamilia, function (err, result, fields) {
+			conTudo.connect();
+			conTudo.query("SELECT * FROM usuario WHERE user_familia_id="+idFamilia, function (err, result, fields) {
 		    if (err) throw err;
 
 		    
@@ -32,10 +35,12 @@ module.exports = function(request, response) {
 		    }
 
 		  });
+			conTudo.end();
 
 		}else{
 		
-		con.query("SELECT * FROM usuario WHERE user_familia_id="+idFamilia+" AND NOT user_id="+idUser, function (err, result, fields) {
+		conId.connect();
+		conId.query("SELECT * FROM usuario WHERE user_familia_id="+idFamilia+" AND NOT user_id="+idUser, function (err, result, fields) {
 		    if (err) throw err;
 
 		    
@@ -49,13 +54,14 @@ module.exports = function(request, response) {
 		    }
 
 		  });
+		conId.end();
 		
 		}
 
 		
 		return	deferred.promise;
 
-		
+	
 	}
 
 	function checkResult(result) {

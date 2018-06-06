@@ -11,17 +11,18 @@ module.exports = function(request, response) {
 		let con = db();
 		var idUser = request.query.id;
 		
-				
+		con.connect();		
 		con.query("UPDATE usuario SET user_notificacao=null WHERE usuario.user_id ="+idUser, function (err, result, fields) {
 							if (err) throw err;
 							
 							console.log("LIMPOU");
 		});
+		con.end();	
 
 		deferred.resolve(true);
 		return	deferred.promise;
 
-		
+	
 	}
 
 	function checkResult(result) {

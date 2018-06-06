@@ -6,8 +6,7 @@ let db = require('../../db');
 
              
 module.exports = function(request, response) {
-	//Cadastro
-	
+	//Não está sendo usado
 	
 
 
@@ -34,7 +33,7 @@ module.exports = function(request, response) {
 		
 	
 		return	deferred.promise;
-
+	con.end();
 	}
 
 	function checkResult(result) {

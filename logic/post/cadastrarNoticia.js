@@ -21,7 +21,7 @@ module.exports = function(request, response) {
 
 		var msg = request.body.msg;
 
-		
+		con.connect();
 		con.query("INSERT INTO notificacao(notificacao_descricao, notificacao_data) VALUES ('"+msg+"',CURRENT_TIMESTAMP)", function (err, result, fields) {
 			    if (err) throw deferred.reject(err);
 
@@ -29,11 +29,12 @@ module.exports = function(request, response) {
 					    
 		  	  
 		  	});
+		con.end();
 
 		
-	
+	console.log("'"+msg+"' Foi cadastrada com sucesso!");
 			
-	deferred.resolve("Notificacao Cadastrada com sucesso!");
+	deferred.resolve("'"+msg+"' Foi cadastrada com sucesso!");
 	
 	return	deferred.promise;
 	// });	
@@ -41,7 +42,7 @@ module.exports = function(request, response) {
 	}
 
 	function checkResult(result) {
-        console.log("Meu Result "+result);
+        
         response.status(200).send(result);
       	
 
