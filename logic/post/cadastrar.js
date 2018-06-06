@@ -110,7 +110,7 @@ module.exports = function(request, response) {
 					    	
 
 					    	conVetInsert.connect();
-					    	con.query(sql, function (err, result, fields) {
+					    	conVetInsert.query(sql, function (err, result, fields) {
 					    		console.log("ERRO: "+err);
 
 					    	});
