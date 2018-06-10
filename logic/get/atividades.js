@@ -12,7 +12,7 @@ module.exports = function(request, response) {
 		var dia = request.query.dia;
 		
 		con.connect();		
-		con.query("SELECT atividade.atividade_id, atividade.atividade_nome, atividade.atividade_pontuacao, atividade.atividade_familia_id AS vencedor, familia.familia_foto AS vencedor_foto FROM atividade LEFT JOIN familia ON(atividade.atividade_familia_id = familia.familia_id) WHERE atividade_data ="+dia, function (err, result, fields) {
+		con.query("SELECT atividade.atividade_id, atividade.atividade_nome, atividade.atividade_pontuacao, atividade.atividade_familia_id AS vencedor, familia.familia_vencedor AS vencedor_foto FROM atividade LEFT JOIN familia ON(atividade.atividade_familia_id = familia.familia_id) WHERE atividade_data ="+dia, function (err, result, fields) {
 		    if (err) throw err;
 
 		    
