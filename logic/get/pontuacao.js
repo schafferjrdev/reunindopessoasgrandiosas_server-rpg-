@@ -42,7 +42,7 @@ module.exports = function(request, response) {
 
 				
 		
-		con.query("SELECT familia.familia_id, familia.familia_nome, familia.familia_vencedor, SUM(atividade.atividade_pontuacao) AS pontuacao, resultadoDia.pontuacaoTotal AS pontosDia FROM familia LEFT JOIN atividade ON ( familia.familia_id = atividade.atividade_familia_id AND atividade.atividade_data <= "+dia+") LEFT JOIN resultadoDia ON (familia.familia_id = resultadoDia.familia_id) GROUP BY familia.familia_id" , function (err, result, fields) {
+		con.query("SELECT familia.familia_id, familia.familia_nome, familia.familia_foto, SUM(atividade.atividade_pontuacao) AS pontuacao, resultadoDia.pontuacaoTotal AS pontosDia FROM familia LEFT JOIN atividade ON ( familia.familia_id = atividade.atividade_familia_id AND atividade.atividade_data <= "+dia+") LEFT JOIN resultadoDia ON (familia.familia_id = resultadoDia.familia_id) GROUP BY familia.familia_id" , function (err, result, fields) {
 		    if (err) throw err;
 
 		    
