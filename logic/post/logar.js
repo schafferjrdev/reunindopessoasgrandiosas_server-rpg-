@@ -52,11 +52,7 @@ module.exports = function(request, response) {
 						}else{
 							//console.log(result); //Resposta para conta existente
 							console.log(result[0].user_nome+" Entrou");
-							con3.connect();
-							con3.query("UPDATE usuario SET user_inicial = '0' WHERE usuario.user_id='"+login+"'", function (err, result, fields) {
-							console.log(result[0].user_nome+" Não é primeira vez mais");
-							});
-							con3.end();
+							
 								 // if(result[0].user_notificacao == null){
 					     			
 					    //  		}else{
@@ -79,6 +75,12 @@ module.exports = function(request, response) {
 					    
 		  	  
 		  	});
+
+		con3.connect();
+		con3.query("UPDATE usuario SET user_inicial = '0' WHERE usuario.user_id='"+login+"'", function (err, result, fields) {
+							console.log(result[0].user_nome+" Não é primeira vez mais");
+		});
+		con3.end();
 
 		con.end();
 
