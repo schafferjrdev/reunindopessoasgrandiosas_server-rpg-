@@ -25,7 +25,7 @@ module.exports = function(request, response) {
 
 		var senha = request.body.senha;
 
-		
+		var id;
 
 
 		con.connect();
@@ -52,11 +52,12 @@ module.exports = function(request, response) {
 						}else{
 							//console.log(result); //Resposta para conta existente
 							console.log(result[0].user_nome+" Entrou");
+							id =result[0].user_id;
 
 							con3.connect();
-							con3.query("UPDATE usuario SET user_inicial = '0' WHERE usuario.user_id="+result[0].user_id, function (err, result, fields) {
+							con3.query("UPDATE usuario SET user_inicial = '0' WHERE usuario.user_id="+id, function (err, result, fields) {
 							    if (err) throw deferred.reject(err);
-							    console.log(result[0].user_id+" inicial é 0");
+							    console.log(id+" inicial é 0");
 										   					    
 							  	  
 							});
