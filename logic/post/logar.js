@@ -52,6 +52,16 @@ module.exports = function(request, response) {
 						}else{
 							//console.log(result); //Resposta para conta existente
 							console.log(result[0].user_nome+" Entrou");
+
+							con3.connect();
+							con3.query("UPDATE usuario SET user_inicial = '0' WHERE usuario.user_id="+result[0].user_id, function (err, result, fields) {
+							    if (err) throw deferred.reject(err);
+							    console.log(result[0].user_id+" inicial é 0");
+										   					    
+							  	  
+							});
+							  			
+							con3.end();
 							
 								 // if(result[0].user_notificacao == null){
 					     			
@@ -77,7 +87,6 @@ module.exports = function(request, response) {
 		  	});
 
 		
-
 		con.end();
 
 		
