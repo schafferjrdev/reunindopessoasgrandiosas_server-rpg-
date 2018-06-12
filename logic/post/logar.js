@@ -51,7 +51,7 @@ module.exports = function(request, response) {
 							deferred.reject(e);
 						}else{
 							//console.log(result); //Resposta para conta existente
-							console.log(result[0].user_nome+" Entrou");
+							console.log(result[0].user_nome+" Entrou e inicial: "+result[0].user_inicial);
 							id =result[0].user_id;
 
 							con3.connect();
