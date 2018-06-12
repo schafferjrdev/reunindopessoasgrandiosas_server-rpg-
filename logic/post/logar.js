@@ -19,6 +19,7 @@ module.exports = function(request, response) {
 		
 		let con = db();
 		let con2 = db();
+		let con3 = db();
 
 		var login = request.body.login;
 
@@ -51,8 +52,11 @@ module.exports = function(request, response) {
 						}else{
 							//console.log(result); //Resposta para conta existente
 							console.log(result[0].user_nome+" Entrou");
-							
-							
+							con3.connect();
+							con3.query("UPDATE usuario SET user_inicial = '0' WHERE usuario.user_id='"+login+"'", function (err, result, fields) {
+
+							});
+							con3.end();
 								 // if(result[0].user_notificacao == null){
 					     			
 					    //  		}else{
