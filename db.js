@@ -2,7 +2,7 @@ const mysql = require('mysql');
 
 let con = () => {
     return mysql.createConnection({
-        host: 'mysql.hostinger.com.br',
+        host: '187.18.169.169',
         user: 'bdbixosm_ducksmd',
         password: 'P4T0SSMDmestre',
         port: 3306,
