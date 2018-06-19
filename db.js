@@ -2,11 +2,11 @@ const mysql = require('mysql');
 
 let con = () => {
     return mysql.createConnection({
-        host: 'mysql.hostinger.com.br',
-        user: 'bdbixosm_ducksmd',
-        password: 'P4T0SSMDmestre',
+        host: 'www.db4free.net',
+        user: 'bixoprojeto2',
+        password: 'bixoprojeto2',
         port: 3306,
-        database: 'bdbixosm_bixosmd'
+        database: 'vireibixobd'
     });
 };
 
